@@ -1,0 +1,19 @@
+{
+	"dependencies": {
+		"express": "^4.19.2",
+		"typescript": "^5.5.2",
+		"dotenv": "^16.4.5",
+		"nodemon": "^3.1.4"
+	},
+	"devDependencies": {
+		"ts-node": "^10.9.2",
+		"@types/node": "^20.14.9",
+		"@types/express": "^4.17.21"
+	},
+	"scripts": {
+		"dev": "nodemon",
+		"start": "ts-node src/index.ts",
+		"build": "tsc",
+		"serve": "node dist/index.js"
+	}
+}
