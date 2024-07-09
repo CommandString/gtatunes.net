@@ -8,23 +8,23 @@ Listen to all of the radio stations from the GTA 3D universe in one place!
 
 ### Station Object
 
-```json
+```json5
 {
-  'name': 'string',
-  'key': 'string',
-  'icon': 'string',
-  'songs': 'array of song objects'
+  "name": "string",
+  "key": "string",
+  "icon": "string",
+  "songs": "array of song objects"
 }
 ```
 
 ### Song Object
 
-```json
+```json5
 {
-  'title': 'string',
-  'artists': 'array of strings',
-  'year': 'number',
-  'audio': 'string'
+  "title": "string",
+  "artists": "array of strings",
+  "year": "number",
+  "audio": "string"
 }
 ```
 
@@ -34,16 +34,16 @@ Listen to all of the radio stations from the GTA 3D universe in one place!
 
 Returns a list of all the radio stations in the GTA 3D universe.
 
-```json
+```json5
 {
-  'sa': {
-    'station_key': 'station object'
+  "sa": {
+    "station_key": "station object"
   },
-  'iii': {
-    'station_key': 'station object'
+  "iii": {
+    "station_key": "station object"
   },
-  'vc': {
-    'station_key': 'station object'
+  "vc": {
+    "station_key": "station object"
   }
 }
 ```
@@ -52,9 +52,9 @@ Returns a list of all the radio stations in the GTA 3D universe.
 
 Returns an all the radio stations in the specified game.
 
-```json
+```json5
 {
-  'station_key': 'station object'
+  "station_key": "station object"
 }
 ```
 
@@ -62,12 +62,12 @@ Returns an all the radio stations in the specified game.
 
 Returns the specified radio station.
 
-```json
+```json5
 {
-  'name': 'string',
-  'key': 'string',
-  'icon': 'string',
-  'songs': 'array of song objects'
+  "name": "string",
+  "key": "string",
+  "icon": "string",
+  "songs": "array of song objects"
 }
 ```
 
@@ -75,13 +75,13 @@ Returns the specified radio station.
 
 Returns an array of all the songs in the specified radio station.
 
-```json
+```json5
 [
   {
-    'title': 'string',
-    'artists': 'array of strings',
-    'year': 'number',
-    'audio': 'string'
+    "title": "string",
+    "artists": "array of strings",
+    "year": "number",
+    "audio": "string"
   }
 ]
 ```
