@@ -109,7 +109,7 @@ export default class Stations extends Controller {
         });
 
         http.get(`${gameStationUri}/songs`, validGame, validStation, (req: Request, res: Response): void => {
-            res.send(req.station);
+            res.send(req.station!.songs);
         });
     }
 }
