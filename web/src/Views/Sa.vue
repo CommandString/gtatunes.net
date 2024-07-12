@@ -1,6 +1,5 @@
 <script setup>
 import {onMounted, reactive, ref, watch} from 'vue';
-import gtasa_artwork from '@/Assets/images/gtasa-artwork.jpg';
 import Modal from "@/Parts/Modal.vue";
 import NextIcon from "@/Parts/Icons/NextIcon.vue";
 import PlayIcon from "@/Parts/Icons/PlayIcon.vue";
@@ -183,12 +182,6 @@ function wheelToChangeStation(e) {
 </script>
 
 <template>
-    <div class="loading-image loading-image--active" @click="(e) => {
-        e.currentTarget.classList.remove('loading-image--active');
-    }">
-        <img :src="gtasa_artwork" alt="Grand Theft Auto San Andreas">
-        <span>Click To Anywhere Start</span>
-    </div>
     <section ref="container" class="radio" :class="state.background">
         <audio ref="audio"></audio>
         <div class="container">

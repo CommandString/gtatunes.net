@@ -330,6 +330,19 @@ const year = new Date().getFullYear();
                     opacity: 0.5;
                 }
             }
+
+            &:not(.game--unfinished)::after {
+                position: absolute;
+                content: 'Click To Listen';
+                font-size: 20px;
+                z-index: 1;
+                bottom: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                color: #fff;
+                text-transform: uppercase;
+                font-weight: $fw-bold;
+            }
         }
     }
 
