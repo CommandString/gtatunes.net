@@ -2,6 +2,16 @@
 
 Listen to all of the radio stations from the GTA 3D universe in one place!
 
+# Production Build
+
+```bash
+npm i
+npm run build
+cd server && npm run serve
+```
+
+*Note: You will need to extract the audio files from the GTA games and place them in the `server/public/audio` directory.*
+
 # API Docs
 
 ## Objects
