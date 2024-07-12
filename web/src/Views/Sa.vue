@@ -197,7 +197,7 @@ function wheelToChangeStation(e) {
                     }" @click="state.volume = (state.volume === 0) ? 2 : 0">Audio</span>
                     <div class="volume">
                         <div
-                            v-for="i in [...Array(16).keys()]" class="volume__bar" :class="{'active': i <= state.volume}"
+                            v-for="i in [...Array(17).keys()]" class="volume__bar" :class="{'active': i <= state.volume}"
                             @click="state.volume = i"
                         ></div>
                     </div>
@@ -509,20 +509,19 @@ section.radio {
                 }
 
                 .volume {
-                    $base: 30%;
-                    $bars: 15;
+                    $base: 15%;
+                    $bars: 16;
 
                     display: flex;
                     align-items: flex-end;
-                    gap: 2px;
+                    gap: 7px;
                     height: 40px;
 
                     .volume__bar {
-                        width: 11px;
+                        width: 7px;
                         background-color: #4A5A6B;
+                        border-radius: 1px;
                         transition: background-color 50ms;
-                        border-radius: 10px;
-                        border: 2px darken(#4A5A6B, 10%) solid;
                         position: relative;
 
                         &:not(:last-child)::after {
