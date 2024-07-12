@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Home from "@/Views/Home.vue";
 import {APP_NAME, DISCORD_LINK} from "@/Constants.js";
+import Sa from "@/Views/Sa.vue";
+import SaIcon from "@/Assets/images/logos/sa.png";
 
 export default (() => {
     let router = createRouter({
@@ -22,7 +24,11 @@ export default (() => {
             {
                 path:'/sa',
                 name: 'station-sa',
-                redirect: '/'
+                component: Sa,
+                meta: {
+                    title: 'San Andreas Radio',
+                    icon: SaIcon
+                }
             },
             {
                 path:'/iii',
@@ -40,6 +46,10 @@ export default (() => {
     router.beforeEach((to, from, next) => {
         if (to.meta.title) {
             document.title = to.meta.title;
+        }
+
+        if (to.meta.icon) {
+            document.querySelector('link[rel="icon"]').href = to.meta.icon;
         }
 
         next();

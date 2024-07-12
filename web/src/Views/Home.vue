@@ -109,6 +109,7 @@ const year = new Date().getFullYear();
 
         img {
             height: 232px;
+            width: 232px;
         }
 
         .hero__content {
@@ -137,6 +138,7 @@ const year = new Date().getFullYear();
         @include breakpoint(880px) {
             img {
                 height: 190px;
+                width: 190px;
             }
 
             .hero__content p {
@@ -160,10 +162,6 @@ const year = new Date().getFullYear();
             flex-direction: column;
             justify-content: center;
             align-items: unset;
-
-            img {
-                width: fit-content;
-            }
         }
     }
 }

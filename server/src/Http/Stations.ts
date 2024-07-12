@@ -65,12 +65,12 @@ export default class Stations extends Controller {
         const { http } = this.app;
         const stations = getStations();
 
-        http.get('/stations', (req: Request, res: Response): void => {
-            res.send(stations);
-        });
-
+        //################//
+        //   MIDDLEWARE   //
+        //################//
         const gameStationsUri = '/stations/:game(sa|vc|iii)';
         const gameStationUri = `${gameStationsUri}/:station([a-z_]+)`;
+
         const validGame = (req: Request, res: Response, next: Function): void => {
             if (['sa', 'vc', 'iii'].includes(req.params.game)) {
                 req.game = stations[req.params.game];
@@ -81,7 +81,7 @@ export default class Stations extends Controller {
             res.send({
                 error: 'Invalid game, must be sa, vc or iii'
             });
-        }
+        };
         const validStation = (req: Request, res: Response, next: Function): void => {
             if (!req.game) {
                 throw new Error('Valid game middleware must be run before valid station middleware.');
@@ -98,7 +98,11 @@ export default class Stations extends Controller {
             res.send({
                 error: 'Station not found, must be one of the following: ' + Object.keys(req.game).join(', ')
             });
-        }
+        };
+
+        http.get('/stations', (req: Request, res: Response): void => {
+            res.send(stations);
+        });
 
         http.get(gameStationsUri, validGame, (req: Request, res: Response): void => {
             res.send(req.game);
