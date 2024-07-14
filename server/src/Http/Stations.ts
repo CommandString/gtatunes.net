@@ -112,9 +112,7 @@ export default class extends Controller {
                 }
             }
 
-            const tempDir = path.resolve(__dirname + '/../../temp');
-            const tempPath = path.join(tempDir, `temp-${Date.now()}`);
-            const stream = createWriteStream(tempPath);
+
 
             let randType = () => Math.floor(Math.random() * 3) as 0|1|2;
             let songStream = await song!.createStream(
@@ -123,25 +121,43 @@ export default class extends Controller {
                 segment as 'ID'|'DJ'|'Caller'|false
             );
 
-            console.log(`Creating stream for ${song!.name}`);
+            let stream = new PassThrough();
 
-            songStream.pipe(stream);
+            res.header({
+                'Content-Type': 'audio/mpeg'
+            })
 
-            songStream.on('end', async () => {
-                stream.end();
-                console.log(`Stream ended for ${song!.name}`);
+            songStream.pipe(stream).pipe(res);
 
-                res.header({
-                    'Content-Type': 'audio/mpeg'
-                }).send(readFileSync(tempPath))
-
-                console.log('Deleting temp file.')
-                await unlink(tempPath);
+            req.on('close', () => {
+                console.log('Request closed.');
+                songStream.kill('SIGKILL');
             });
 
-            req.on('end', async () => {
-                console.log(`Sent ${song!.name} to client.`);
-            })
+            //
+            // const tempDir = path.resolve(__dirname + '/../../temp');
+            // const tempPath = path.join(tempDir, `temp-${Date.now()}`);
+            // const stream = createWriteStream(tempPath);
+            //
+            // console.log(`Creating stream for ${song!.name}`);
+            //
+            // songStream.pipe(stream);
+            //
+            // songStream.on('end', async () => {
+            //     stream.end();
+            //     console.log(`Stream ended for ${song!.name}`);
+            //
+            //     res.header({
+            //         'Content-Type': 'audio/mpeg'
+            //     }).send(readFileSync(tempPath))
+            //
+            //     console.log('Deleting temp file.')
+            //     await unlink(tempPath);
+            // });
+            //
+            // req.on('end', async () => {
+            //     console.log(`Sent ${song!.name} to client.`);
+            // })
         });
     }
 }
