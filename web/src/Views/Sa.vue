@@ -65,7 +65,7 @@ let state = reactive({
 })
 
 watch(() => state.volume, (value) => {
-    audio.value.volume = value / 16;
+    audio.value.volume = value / 17;
 });
 
 onMounted(async () => {
@@ -85,7 +85,7 @@ onMounted(async () => {
     audio.value.addEventListener('pause', () => state.paused = true);
     audio.value.addEventListener('play', () => state.paused = false);
 
-    state.volume = 2;
+    state.volume = 17;
 });
 
 /**

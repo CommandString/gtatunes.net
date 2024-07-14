@@ -7,7 +7,7 @@ export const audioFolder = path.resolve(__dirname, '../../audio');
 const createConcatStream = (files: Array<string>): FfmpegCommand => {
     return ffmpeg()
         .input(`concat:${files.join('|')}`)
-        .format('ogg')
+        .format('mp3')
         .on('error', (e) => {
             console.error(e);
         });

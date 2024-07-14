@@ -108,7 +108,7 @@ export default class extends Controller {
             }
 
             res.header({
-                'Content-Type': 'audio/ogg',
+                'Content-Type': 'audio/mpeg',
                 'Transfer-Encoding': 'chunked'
             });
 
