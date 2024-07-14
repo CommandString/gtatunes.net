@@ -83,7 +83,7 @@ onMounted(async () => {
     audio.value.addEventListener('ended', async () => {
         let currentSongIndex = state.currentStation.songs.findIndex(song => song === state.currentSong);
         state.currentSong = state.currentStation.songs[currentSongIndex + 1] ?? state.currentStation.songs[0];
-``
+
         audio.value.src = `/api/play?station=${state.currentStation.name}&song=${state.currentSong}&segment=dj`;
         await audio.value.play();
     });
@@ -114,9 +114,9 @@ async function changeStation(station) {
         audio.value.addEventListener('canplay', async () => {
             switchAudio.value.pause();
             switchAudio.value.currentTime = 0;
+        }, {once: true});
 
-            await audio.value.play();
-        }, {once: true})
+        await audio.value.play();
     } catch (e) {
     }
 }
