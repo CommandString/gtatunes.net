@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node watch-php.js"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.11.0",
+    "dotenv": "^16.4.5",
+    "sass": "^1.77.6",
+    "vue": "^3.4.30",
+    "vue-router": "^4.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.1"
+  }
+}

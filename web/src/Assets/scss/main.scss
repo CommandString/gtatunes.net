@@ -1,0 +1,77 @@
+@import "normalize";
+@import "mixins";
+@import "dimmer";
+
+$grid: 1204px;
+
+$fw-thin: 100;
+$fw-extra-light: 200;
+$fw-light: 300;
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semi-bold: 600;
+$fw-bold: 700;
+$fw-extra-bold: 800;
+$fw-black: 900;
+
+$red: #A8201A;
+
+body {
+    font-family: "Outfit", sans-serif;
+    font-size: 18px;
+    background: #111;
+    color: white;
+}
+
+section {
+    padding: 40px 0;
+}
+
+h1, h2, h3, h4, p {
+    margin: 10px 0;
+}
+
+main {
+    min-height: 70vh;
+}
+
+.container {
+    max-width: 1204px;
+    margin: 0 auto;
+
+    @include breakpoint($grid + 60px) {
+        padding: 0 30px;
+    }
+
+    @include breakpoint(500px) {
+        padding: 0 15px;
+    }
+}
+
+// SA Typography
+
+@font-face {
+    font-family: 'Bank Gothic';
+    src: url('/fonts/Bank-Gothic-Light.otf') format('opentype');
+    font-weight: $fw-light;
+}
+
+@font-face {
+    font-family: 'Bank Gothic';
+    src: url('/fonts/Bank-Gothic-Medium.ttf') format('opentype');
+    font-weight: $fw-regular;
+}
+
+@font-face {
+    font-family: 'Diploma';
+    src: url('/fonts/Diploma-Regular.ttf') format('truetype');
+    font-weight: $fw-regular;
+}
+
+.bank-gothic {
+    font-family: 'Bank Gothic', sans-serif;
+}
+
+.diploma {
+    font-family: 'Diploma', sans-serif;
+}

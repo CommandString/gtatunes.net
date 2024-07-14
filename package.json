@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "install": "concurrently \"cd server && npm install\" \"cd web && npm install\"",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd web && npm run dev\"",
+    "build": "concurrently \"cd server && npm run build\" \"cd web && npm run build\""
+  }
+}

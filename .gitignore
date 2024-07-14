@@ -1,0 +1,7 @@
+dist
+node_modules
+pnpm-lock.yaml
+.env
+.idea
+.DS_Store
+server/audio

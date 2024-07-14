@@ -1,0 +1,23 @@
+body {
+    position: relative;
+
+    &::after {
+        position: fixed;
+        content: "";
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        transition: background-color 150ms;
+        pointer-events: none;
+    }
+
+    &:has(.modal.modal--open) {
+        overflow: hidden !important;
+
+        &::after {
+            background-color: rgba(0, 0, 0, 0.7);
+            pointer-events: unset;
+        }
+    }
+}
