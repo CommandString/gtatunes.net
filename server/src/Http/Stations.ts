@@ -123,7 +123,7 @@ export default class extends Controller {
 
             songStream.pipe(stream).pipe(res);
 
-            stream.on('end', () => {
+            songStream  .on('end', () => {
                 res.end();
             });
 
