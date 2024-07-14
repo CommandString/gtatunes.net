@@ -11,6 +11,11 @@ import {Station} from "../Stations/Station";
 import MasterSounds from "../Stations/MasterSounds";
 import PlaybackFM from "../Stations/PlaybackFM";
 import RadioLosSantos from "../Stations/RadioLosSantos";
+import {createWriteStream} from "node:fs";
+import path from "node:path";
+import {unlink} from "node:fs/promises";
+import * as fs from "node:fs";
+import {readFileSync} from "fs";
 
 export default class extends Controller {
     public register(): void {
@@ -107,12 +112,9 @@ export default class extends Controller {
                 }
             }
 
-            res.header({
-                'Content-Type': 'audio/mpeg',
-                'Transfer-Encoding': 'chunked'
-            });
-
-            let stream = new PassThrough();
+            const tempDir = path.resolve(__dirname + '/../../temp');
+            const tempPath = path.join(tempDir, `temp-${Date.now()}`);
+            const stream = createWriteStream(tempPath);
 
             let randType = () => Math.floor(Math.random() * 3) as 0|1|2;
             let songStream = await song!.createStream(
@@ -121,16 +123,25 @@ export default class extends Controller {
                 segment as 'ID'|'DJ'|'Caller'|false
             );
 
-            songStream.pipe(stream).pipe(res);
+            console.log(`Creating stream for ${song!.name}`);
 
-            songStream  .on('end', () => {
-                res.end();
-            });
+            songStream.pipe(stream);
 
-            res.on('close', () => {
-                songStream.on('error', () => {}).kill('SIGKILL');
+            songStream.on('end', async () => {
                 stream.end();
+                console.log(`Stream ended for ${song!.name}`);
+
+                res.header({
+                    'Content-Type': 'audio/mpeg'
+                }).send(readFileSync(tempPath))
+
+                console.log('Deleting temp file.')
+                await unlink(tempPath);
             });
+
+            req.on('end', async () => {
+                console.log(`Sent ${song!.name} to client.`);
+            })
         });
     }
 }
