@@ -12,6 +12,12 @@ import PauseIcon from "@/Parts/Icons/PauseIcon.vue";
 const audio = ref(null);
 
 /**
+ * @type {Object} switchAudio
+ * @property {HTMLAudioElement} value
+ */
+const switchAudio = ref(null);
+
+/**
  * @type {Object} container
  * @property {HTMLElement} value
  */
@@ -64,7 +70,7 @@ let state = reactive({
     paused: true
 })
 
-watch(() => state.volume, (value) => {
+watch(() => state.volume, value => {
     audio.value.volume = value / 17;
 });
 
@@ -77,7 +83,7 @@ onMounted(async () => {
     audio.value.addEventListener('ended', async () => {
         let currentSongIndex = state.currentStation.songs.findIndex(song => song === state.currentSong);
         state.currentSong = state.currentStation.songs[currentSongIndex + 1] ?? state.currentStation.songs[0];
-
+``
         audio.value.src = `/api/play?station=${state.currentStation.name}&song=${state.currentSong}&segment=dj`;
         await audio.value.play();
     });
@@ -102,7 +108,15 @@ async function changeStation(station) {
         }
 
         audio.value.src = `/api/play?station=${station.name}&song=${state.currentSong}&segment=id`;
-        await audio.value.play();
+
+        await switchAudio.value.play();
+
+        audio.value.addEventListener('canplay', async () => {
+            switchAudio.value.pause();
+            switchAudio.value.currentTime = 0;
+
+            await audio.value.play();
+        }, {once: true})
     } catch (e) {
     }
 }
@@ -128,6 +142,7 @@ function wheelToChangeStation(e) {
 <template>
     <section ref="container" class="radio" :class="state.background">
         <audio ref="audio"></audio>
+        <audio ref="switchAudio" src="/audio/switch-station.mp3" loop></audio>
         <div class="container">
             <h1>San Andreas Radio</h1>
             <div class="settings">
@@ -141,12 +156,14 @@ function wheelToChangeStation(e) {
                     }" @click="state.volume = (state.volume === 0) ? 2 : 0">Audio</span>
                     <div class="volume">
                         <div
-                            v-for="i in [...Array(17).keys()]" class="volume__bar" :class="{'active': i <= state.volume}"
+                            v-for="i in [...Array(17).keys()]" class="volume__bar"
+                            :class="{'active': i <= state.volume}"
                             @click="state.volume = i"
                         ></div>
                     </div>
                 </div>
-                <div class="setting" @click="() => state.selectingBackground = true"><span>Change Background</span></div>
+                <div class="setting" @click="() => state.selectingBackground = true"><span>Change Background</span>
+                </div>
                 <div
                     class="setting"
                     @click="() => {
@@ -166,7 +183,7 @@ function wheelToChangeStation(e) {
                     @wheel="wheelToChangeStation"
                     @click="() => changeStation(null)"
                 >Radio Station</span>
-                <span>{{state.currentStation?.name ?? 'None'}}</span>
+                <span>{{ state.currentStation?.name ?? 'None' }}</span>
             </div>
             <div class="radio-stations" @wheel="wheelToChangeStation">
                 <div
@@ -179,13 +196,15 @@ function wheelToChangeStation(e) {
                     <img :src="station.icon" :alt="station.name">
                 </div>
             </div>
-            <div class="controls" :class="{'controls--hidden': state.currentSong === null || state.currentStation === null}">
-                <div v-if="state.currentStation !== null && state.currentSong !== null" class="controls__currently-playing">
+            <div class="controls"
+                 :class="{'controls--hidden': state.currentSong === null || state.currentStation === null}">
+                <div v-if="state.currentStation !== null && state.currentSong !== null"
+                     class="controls__currently-playing">
                     <div class="station">
                         <img :src="state.currentStation.icon" alt="">
                     </div>
                     <div class="song">
-                        <div class="song__title">{{state.currentSong}}</div>
+                        <div class="song__title">{{ state.currentSong }}</div>
                     </div>
                 </div>
                 <div class="controls__state">
