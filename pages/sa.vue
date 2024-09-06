@@ -65,6 +65,7 @@ let currentStation: Ref<APIStation | null> = ref(null);
 let currentSong: Ref<string | null> = ref(null);
 let streamAudio: Ref<boolean> = ref(false);
 let disableDJs: Ref<boolean> = ref(false);
+let showingHelpModal: Ref<boolean> = ref(false);
 let paused: Ref<boolean> = ref(true);
 let muted: Ref<boolean> = ref(false);
 let selectingBackground: Ref<boolean> = ref(false);
@@ -117,13 +118,14 @@ onMounted(async () => {
             'ArrowRight': () => changeSong('next'),
             'ArrowUp': () => volume.value = Math.min(17, volume.value + 1),
             'ArrowDown': () => volume.value = Math.max(0, volume.value - 1),
+            '/': () => e.ctrlKey ? showingHelpModal.value = !showingHelpModal.value : null
         };
 
         if (check[e.key]) {
             check[e.key]();
-        }
 
-        e.preventDefault();
+            e.preventDefault();
+        }
     });
 });
 
@@ -146,7 +148,7 @@ watch(disableDJs, value => {
 
 async function changeSong(
     song: string | 'next' | 'previous',
-    segment: 'id'|'dj'|'caller'|'random'|false = false
+    segment: 'id' | 'dj' | 'caller' | 'random' | false = false
 ) {
     await playPause(true);
 
@@ -183,7 +185,7 @@ async function changeSong(
 
     if (segment && !disableDJs.value) {
         if (segment === 'random') {
-            segment = ['id', 'dj', 'caller'][Math.floor(Math.random() * 3)] as 'id'|'dj'|'caller';
+            segment = ['id', 'dj', 'caller'][Math.floor(Math.random() * 3)] as 'id' | 'dj' | 'caller';
         }
 
         audioOptions.set('segment', segment);
@@ -334,6 +336,10 @@ async function playPause(pause: boolean) {
                     <span @click="() => disableDJs = !disableDJs" class="setting__name">Disable DJs</span>
                     <span class="setting__value">{{ disableDJs ? 'On' : 'Off' }}</span>
                 </div>
+                <div class="setting"
+                     :class="{ 'active': showingHelpModal }">
+                    <span @click="() => showingHelpModal = !showingHelpModal" class="setting__name">Help</span>
+                </div>
             </div>
         </div>
         <div class="container">
@@ -344,7 +350,7 @@ async function playPause(pause: boolean) {
             >
                 Radio Station
             </span>
-            <span>
+                <span>
                 {{ currentStation?.name ?? 'None' }}
             </span>
             </div>
@@ -435,6 +441,46 @@ async function playPause(pause: boolean) {
             </div>
         </template>
     </Modal>
+    <Modal class="help-modal" :open="showingHelpModal" @close="() => showingHelpModal = false">
+        <template #title>Help</template>
+        <template #body>
+            <h2>Shortcuts</h2>
+            <div class="shortcuts">
+                <div class="shortcut">
+                    <kbd>UP</kbd>
+                    <p>Increase Volume</p>
+                </div>
+                <div class="shortcut">
+                    <kbd>DOWN</kbd>
+                    <p>Decrease Volume</p>
+                </div>
+                <div class="shortcut">
+                    <kbd>LEFT</kbd>
+                    <p>Previous Song</p>
+                </div>
+                <div class="shortcut">
+                    <kbd>RIGHT</kbd>
+                    <p>Next Song</p>
+                </div>
+                <div class="shortcut">
+                    <kbd>SPACE</kbd>
+                    <p>Pause/Play Song</p>
+                </div>
+            </div>
+            <p>You can also use <kbd>CTRL</kbd> + <kbd>/</kbd> to toggle this modal.</p>
+            <h2>Special Features</h2>
+            <p>You can scroll on the audio label to change volume. You can also scroll while hovering hover the radio station icons to change the station.</p>
+            <h2>Stream Audio Setting</h2>
+            <p>This is really a performance and compatibility option. If you're on mobile you will <b>NOT</b> see this
+                option as it will not work. Pretty much the songs are streamed from multiple audio files or if you
+                disable this option it will wait for the audio files to finish being combined to prevent issues on
+                mobile.</p>
+            <h2>Disable DJs Setting</h2>
+            <p>Enabling this option will remove inserts such as segments and prevent DJ voice over for the song intros
+                and outros. Do note that SFUR does not have any audio files without the DJ so you will still hear
+                the DJ in the intros and outros!</p>
+        </template>
+    </Modal>
 </template>
 
 <style scoped lang="scss">
@@ -463,7 +509,6 @@ section.radio {
     background-color: black;
     background-attachment: scroll;
     display: flex;
-    gap: 50px;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
@@ -958,6 +1003,41 @@ section.radio {
             .song__title,
             .song__artists {
                 font-size: 16px;
+            }
+        }
+    }
+}
+
+.help-modal {
+    p {
+        line-height: 27px;
+    }
+
+    kbd {
+        background: #526785;
+        padding: 2px 12px;
+        border-radius: 5px;
+        text-align: center;
+        font-family: "Bank Gothic", sans-serif;
+    }
+
+    .shortcuts {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .shortcut {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-grow: 1;
+
+            kbd {
+                width: 100px;
+            }
+
+            p {
+                margin: 0;
             }
         }
     }
