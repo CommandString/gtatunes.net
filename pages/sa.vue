@@ -201,6 +201,8 @@ async function changeSong(
 
     await switchAudio.value!.play();
 
+    document.title = `${currentSong.value!.name} by ${currentSong.value!.artists.join(', ')}`;
+
     audio.value!.addEventListener('canplay', async () => {
         switchAudio.value!.pause();
         switchAudio.value!.currentTime = 0;
@@ -228,6 +230,7 @@ async function changeStation(station: APIStation | null) {
     if (station === null) {
         currentSong.value = null;
         audio.value!.src = '';
+        document.title = 'San Andreas Radio';
 
         if (!switchAudio.value?.paused) {
             switchAudio.value!.pause();
