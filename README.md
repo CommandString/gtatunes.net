@@ -4,21 +4,55 @@ Play all the radio stations from the GTA 3D Universe games in one place!
 
 # API Usage
 
+## Objects
+
+### Station Object
+
+```json5
+{
+    "name": "Station Name",
+    "icon": "Station Icon URL",
+    "songs": [
+        // song objects
+    ]
+}
+```
+
+### Song Object
+
+```json5
+{
+    "name": "Song Name",
+    "artist": ["Song Artists"],
+    "year": "Song Year Released"
+}
+```
+
 ## Get Stations
 
 GET `/api/stations` (source: `/server/api/stations.get.ts`)
 
 ```json5
-[
-  {
-    "name": "Bounce FM",
-    "icon": "/station-icons/sa/bounce_fm.png",
-    "songs": [
-      "Between the Sheets",
-      // rest of the songs
+{
+    "sa": [
+        // station objects
+    ],
+    "vc": [
+        // station objects
+    ],
+    "iii": [
+        // station objects
     ]
-  },
-  // rest of the stations
+}
+```
+
+## Get Game Stations
+
+GET `/api/stations/:game` (source: `/server/api/stations/[game].get.ts`)
+
+```json5
+[
+  // station objects
 ]
 ```
 
