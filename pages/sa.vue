@@ -410,7 +410,7 @@ async function playPause(pause: boolean) {
                     background = bg.key;
                 }"
             >
-                <img :src="bg.image" :alt="bg.name">
+                <img :src="bg.image" :alt="bg.name" :class="{'middle': bg.key === 'san-fierro'}">
             </div>
         </template>
     </Modal>
@@ -891,11 +891,16 @@ section.radio {
         img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
+            object-position: right;
             display: block;
             border-radius: 5px;
             transition: filter 150ms;
             filter: brightness(0.7);
+
+            &.middle {
+                object-position: center;
+            }
         }
 
         &:hover img {

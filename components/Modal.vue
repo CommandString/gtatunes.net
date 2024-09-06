@@ -70,12 +70,12 @@ onMounted(() => {
         transition: opacity 150ms;
         max-width: 1204px;
         width: 100%;
-        height: fit-content;
         max-height: calc(100vh - 100px);
         overflow: hidden;
         border: 1px solid #aaa;
         display: flex;
         flex-direction: column;
+        height: fit-content;
 
         &--open {
             pointer-events: unset;
@@ -136,6 +136,7 @@ onMounted(() => {
 
         @include breakpoint(1274px) {
             max-width: calc(100vw - 100px);
+            height: 100%;
         }
     }
 }
