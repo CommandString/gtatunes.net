@@ -99,8 +99,16 @@ onMounted(async () => {
         await changeSong('next');
     });
 
-    audio.value.addEventListener('pause', () => paused.value = true);
-    audio.value.addEventListener('play', () => paused.value = false);
+    navigator.mediaSession.setActionHandler("play", async () => await playPause(false));
+    navigator.mediaSession.setActionHandler("pause", async () => await playPause(true));
+    navigator.mediaSession.setActionHandler("previoustrack", async () => await changeSong('previous'));
+    navigator.mediaSession.setActionHandler("nexttrack", async () => await changeSong('next'));
+
+    switchAudio.value?.addEventListener('play', () => {
+        if (!paused.value) {
+            switchAudio.value!.pause();
+        }
+    })
 });
 
 watch(volume, value => {
@@ -124,6 +132,12 @@ async function changeSong(
     song: string | 'next' | 'previous',
     segment: 'id'|'dj'|'caller'|'random'|false = false
 ) {
+    await playPause(true);
+
+    if (currentStation.value === null) {
+        return;
+    }
+
     if (song === 'next' || song === 'previous') {
         let currentIndex = currentStation.value!.songs.findIndex(s => s === currentSong.value);
         song = currentStation.value!.songs[song === 'next' ? currentIndex + 1 : currentIndex - 1] ?? currentStation.value!.songs[song === 'next' ? 0 : currentStation.value!.songs.length - 1];
@@ -135,6 +149,15 @@ async function changeSong(
     }
 
     currentSong.value = song;
+
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: `Loading ${currentSong.value!}...`,
+            artwork: [
+                {src: currentStation.value!.icon, sizes: '512x512', type: 'image/png'}
+            ]
+        });
+    }
 
     let audioOptions = new URLSearchParams({
         station: currentStation.value!.name,
@@ -162,6 +185,18 @@ async function changeSong(
     audio.value!.addEventListener('canplay', async () => {
         switchAudio.value!.pause();
         switchAudio.value!.currentTime = 0;
+
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: currentSong.value!,
+                artwork: [
+                    {src: currentStation.value!.icon, sizes: '512x512', type: 'image/png'}
+                ]
+            });
+
+            await playPause(true);
+            await playPause(false);
+        }
     }, {once: true});
 
     await playPause(false);
@@ -210,7 +245,7 @@ async function playPause(pause: boolean) {
         try {
             await audio.value!.play();
         } catch (e) {
-            // ignore potential request interruption errors when switching stations too fast
+            console.error(e)
         }
     } else {
         audio.value!.pause();
