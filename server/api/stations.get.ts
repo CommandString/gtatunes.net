@@ -1,15 +1,9 @@
-import {getStations} from "~/server/utils/Stations";
+import saStations from "./stations/sa.get";
 
 export default defineEventHandler(async (event) => {
-    let mappedStations = [];
+    let sa = await saStations(event);
 
-    for (let station of getStations()) {
-        mappedStations.push({
-            name: station.name,
-            icon: station.icon,
-            songs: (await station.getSongs()).map(song => song.name)
-        });
+    return {
+        sa: sa
     }
-
-    return mappedStations;
 });

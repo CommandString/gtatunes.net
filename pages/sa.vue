@@ -80,6 +80,7 @@ watch(background, value => {
 });
 
 onMounted(async () => {
+    let stationsReq = await fetch('/api/stations/sa');
 
     if (!stationsReq.ok) {
         return alert('There was an issue fetching the radio stations. Please contact support or try again later.');
