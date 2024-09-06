@@ -705,7 +705,7 @@ section.radio {
                 align-self: center;
                 gap: 20px;
 
-                :deep(svg) {
+                svg {
                     $size: 25px;
 
                     width: $size;
@@ -719,10 +719,6 @@ section.radio {
 
                     &.hidden {
                         display: none;
-                    }
-
-                    &.play-icon {
-                        transform: translateX(2px);
                     }
 
                     &.pause-icon {
