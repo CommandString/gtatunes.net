@@ -461,6 +461,7 @@ section.radio {
     background-size: cover;
     background-repeat: no-repeat;
     background-color: black;
+    background-attachment: scroll;
     display: flex;
     gap: 50px;
     flex-direction: column;
@@ -475,7 +476,8 @@ section.radio {
     }
 
     @include breakpoint(1167px) {
-        background-size: contain;
+        background-size: cover;
+        background-position: top right;
     }
 
     &.las-venturas-desert {
@@ -492,6 +494,7 @@ section.radio {
 
     &.san-fierro {
         background-image: $gradient-overlay, url("/bgs/sa/san-fierro.png");
+        background-position: top center;
     }
 
     &.san-fierro-bridge {
@@ -538,8 +541,10 @@ section.radio {
             &__name {
                 cursor: pointer;
 
-                &:hover {
-                    opacity: 100%;
+                @media (hover: hover) {
+                    &:hover {
+                        opacity: 100%;
+                    }
                 }
             }
 
@@ -637,6 +642,10 @@ section.radio {
             }
 
             @include breakpoint(640px) {
+                span {
+                    opacity: 75%;
+                }
+
                 &--volume, &--stream {
                     display: none;
                 }
