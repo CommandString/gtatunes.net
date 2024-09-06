@@ -1,7 +1,12 @@
-export type APIStations = APIStation[];
+export type APISong = {
+    name: string,
+    artists: string[],
+    year: number
+}
 
 export type APIStation = {
     name: string,
     icon: string,
-    songs: string[]
+    songs: APISong[]
 };
+

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {Ref} from "vue";
-import type {APIStation, APIStations} from "~/@types/api";
+import type {APIStation, APISong} from "~/@types/api";
 
 useSeoMeta({
     ogTitle: 'San Andreas Radio',
@@ -60,9 +60,9 @@ let volume: Ref<number> = ref(17);
 let audio: Ref<HTMLAudioElement | null> = ref(null);
 let switchAudio: Ref<HTMLAudioElement | null> = ref(null);
 let background: Ref<BackgroundKey> = ref('vinewood');
-let stations: Ref<APIStations | null> = ref(null);
+let stations: Ref<APIStation[] | null> = ref(null);
 let currentStation: Ref<APIStation | null> = ref(null);
-let currentSong: Ref<string | null> = ref(null);
+let currentSong: Ref<APISong | null> = ref(null);
 let streamAudio: Ref<boolean> = ref(false);
 let disableDJs: Ref<boolean> = ref(false);
 let showingHelpModal: Ref<boolean> = ref(false);
@@ -80,7 +80,6 @@ watch(background, value => {
 });
 
 onMounted(async () => {
-    let stationsReq = await fetch('/api/stations');
 
     if (!stationsReq.ok) {
         return alert('There was an issue fetching the radio stations. Please contact support or try again later.');
@@ -147,7 +146,7 @@ watch(disableDJs, value => {
 })
 
 async function changeSong(
-    song: string | 'next' | 'previous',
+    song: APISong | 'next' | 'previous',
     segment: 'id' | 'dj' | 'caller' | 'random' | false = false
 ) {
     await playPause(true);
@@ -157,7 +156,7 @@ async function changeSong(
     }
 
     if (song === 'next' || song === 'previous') {
-        let currentIndex = currentStation.value!.songs.findIndex(s => s === currentSong.value);
+        let currentIndex = currentStation.value!.songs.findIndex(s => s.name === currentSong.value!.name);
         song = currentStation.value!.songs[song === 'next' ? currentIndex + 1 : currentIndex - 1] ?? currentStation.value!.songs[song === 'next' ? 0 : currentStation.value!.songs.length - 1];
     }
 
@@ -170,7 +169,8 @@ async function changeSong(
 
     if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: `Loading ${currentSong.value!}...`,
+            title: `Loading ${currentSong.value!.name}...`,
+            artist: currentSong.value!.artists.join(', '),
             artwork: [
                 {src: currentStation.value!.icon, sizes: '512x512', type: 'image/png'}
             ]
@@ -179,7 +179,7 @@ async function changeSong(
 
     let audioOptions = new URLSearchParams({
         station: currentStation.value!.name,
-        song: currentSong.value,
+        song: currentSong.value!.name,
         stream: streamAudio.value ? '1' : '0'
     });
 
@@ -206,7 +206,8 @@ async function changeSong(
 
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: currentSong.value!,
+                title: currentSong.value!.name,
+                artist: currentSong.value!.artists.join(', '),
                 artwork: [
                     {src: currentStation.value!.icon, sizes: '512x512', type: 'image/png'}
                 ]
@@ -373,7 +374,8 @@ async function playPause(pause: boolean) {
                         <img :src="currentStation.icon" :alt="currentStation.name">
                     </div>
                     <div class="song">
-                        <div class="song__title">{{ currentSong }}</div>
+                        <div class="song__title">{{ currentSong.name }}</div>
+                        <div class="song__meta">{{ currentSong.artists.join(', ') }}</div>
                     </div>
                 </div>
                 <div class="controls__state">
@@ -437,7 +439,12 @@ async function playPause(pause: boolean) {
                     changeSong(song);
                 }"
             >
-                <div class="song__title" v-text="song"></div>
+                <div class="song__title">
+                    {{ song.name }}
+                </div>
+                <div class="song__artists">
+                    {{ song.artists.join(', ') }}
+                </div>
             </div>
         </template>
     </Modal>
@@ -863,10 +870,10 @@ section.radio {
             .song__title {
                 font-size: 24px;
                 font-weight: $fw-medium;
-                margin-bottom: 2px;
+                margin-bottom: 5px;
             }
 
-            .song__artists {
+            .song__meta {
                 color: #bbb;
             }
         }
@@ -982,8 +989,7 @@ section.radio {
             user-select: none;
         }
 
-        &__title,
-        &__artists {
+        &__title {
             display: inline-block;
             font-size: 18px;
             color: white;
@@ -991,8 +997,7 @@ section.radio {
         }
 
         &:hover {
-            .song__title,
-            .song__artists {
+            .song__title {
                 color: #B7D2F3;
             }
         }

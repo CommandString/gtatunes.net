@@ -2,7 +2,7 @@ import ffmpeg, {FfmpegCommand} from "fluent-ffmpeg";
 import path from "node:path";
 import {readdir} from "node:fs/promises";
 
-export const audioFolder = path.resolve(process.cwd(), 'audio');
+const AUDIO_FOLDER = path.resolve(process.cwd(), 'audio');
 
 const createConcatStream = (files: Array<string>): FfmpegCommand => {
     return ffmpeg()
@@ -13,10 +13,17 @@ const createConcatStream = (files: Array<string>): FfmpegCommand => {
         });
 }
 
+/**
+ * [title, artists, year, file_name]
+ * The title is used if file_name is null
+ */
+export type SongMetaData = [string, string[], number, string|null];
+
 export abstract class Station {
     abstract readonly name: string;
     abstract readonly icon: string;
     abstract readonly songFolder: string|null;
+    protected readonly abstract songMetadata: SongMetaData[];
     private songs: Song[]|null = null;
 
     public async getSongs(): Promise<Song[]> {
@@ -24,16 +31,16 @@ export abstract class Station {
             return this.songs;
         }
 
-        let pathPrefix = [audioFolder, this.songFolder ?? this.name];
+        let pathPrefix = [AUDIO_FOLDER, this.songFolder ?? this.name];
 
         const files = await readdir(path.resolve(...pathPrefix));
         let songs = [];
 
-        const getPaths = (title: string, type: 'Intro'|'Outro'): Array<string> => {
+        const getPaths = (title: string, type: 'intro'|'outro'|'mid'): Array<string> => {
             let intros = [];
 
             for (let file of files) {
-                if (file.includes(`${title} (${type}`)) {
+                if (file.toLowerCase().includes(`${title.toLowerCase()} (${type}`)) {
                     intros.push(path.resolve(...pathPrefix, file));
                 }
             }
@@ -41,14 +48,8 @@ export abstract class Station {
             return intros;
         }
 
-        for (let file of files) {
-            if (!file.includes('(Mid)')) {
-                continue;
-            }
-
-            let title = file.replace(' (Mid).ogg', '');
-
-            songs.push(new Song(this, title, path.resolve(...pathPrefix, file), getPaths(title, 'Intro').reverse(), getPaths(title, 'Outro').reverse()));
+        for (let [title, artists, year, fileName] of this.songMetadata) {
+            songs.push(new Song(this, title, artists, year, getPaths(fileName ?? title, 'mid')[0], getPaths(fileName ?? title, 'intro').reverse(), getPaths(fileName ?? title, 'outro').reverse()));
         }
 
         return this.songs = songs;
@@ -60,7 +61,7 @@ export abstract class Station {
     }
 
     public async getRandomSegment(type: 'ID'|'DJ'|'Caller'): Promise<string> {
-        let pathPrefix = [audioFolder, this.songFolder ?? this.name];
+        let pathPrefix = [AUDIO_FOLDER, this.songFolder ?? this.name];
         const files = await readdir(path.resolve(...pathPrefix));
         let ids = [];
 
@@ -84,6 +85,8 @@ export class Song {
     public constructor(
         public readonly station: Station,
         public readonly name: string,
+        public readonly artists: string[],
+        public readonly year: number,
         public readonly midPath: string,
         public readonly intros: Array<string>,
         public readonly outros: Array<string>,
