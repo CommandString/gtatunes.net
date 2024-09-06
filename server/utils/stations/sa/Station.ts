@@ -25,6 +25,11 @@ export abstract class Station {
     abstract readonly songFolder: string|null;
     protected readonly abstract songMetadata: SongMetaData[];
     private songs: Song[]|null = null;
+    private segments: {
+        id: string[]|null,
+        dj: string[]|null,
+        caller: string[]|null,
+    } = {id: null, dj: null, caller: null};
 
     public async getSongs(): Promise<Song[]> {
         if (this.songs) {
@@ -61,21 +66,28 @@ export abstract class Station {
     }
 
     public async getRandomSegment(type: 'ID'|'DJ'|'Caller'): Promise<string> {
+        let segments = [];
         let pathPrefix = [AUDIO_FOLDER, this.songFolder ?? this.name];
-        const files = await readdir(path.resolve(...pathPrefix));
-        let ids = [];
 
-        for (let file of files) {
-            if (file.includes(`(${type})`)) {
-                ids.push(file);
+        if (!this.segments[type.toLowerCase() as 'id'|'dj'|'caller']) {
+            const files = await readdir(path.resolve(...pathPrefix));
+
+            for (let file of files) {
+                if (file.includes(`(${type})`)) {
+                    segments.push(file);
+                }
             }
+
+            if (segments.length === 0) {
+                throw new Error(`No ${type} segments found`);
+            }
+
+            this.segments[type.toLowerCase() as 'id'|'dj'|'caller'] = segments;
+        } else {
+            segments = this.segments[type.toLowerCase() as 'id'|'dj'|'caller']!;
         }
 
-        if (ids.length === 0) {
-            throw new Error(`No ${type} files found`);
-        }
-
-        let randomId = ids[Math.floor(Math.random() * ids.length)];
+        let randomId = segments[Math.floor(Math.random() * segments.length)];
 
         return path.resolve(...pathPrefix, randomId);
     }
