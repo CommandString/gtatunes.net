@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'Bank Gothic';
+    src: url('/fonts/Bank-Gothic-Light.otf') format('opentype');
+    font-weight: $fw-light;
+}
+
+@font-face {
+    font-family: 'Bank Gothic';
+    src: url('/fonts/Bank-Gothic-Medium.ttf') format('opentype');
+    font-weight: $fw-regular;
+}
+
+@font-face {
+    font-family: 'Diploma';
+    src: url('/fonts/Diploma-Regular.ttf') format('truetype');
+    font-weight: $fw-regular;
+}
+
+.bank-gothic {
+    font-family: 'Bank Gothic', sans-serif;
+}
+
+.diploma {
+    font-family: 'Diploma', sans-serif;
+}
