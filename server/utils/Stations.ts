@@ -21,7 +21,7 @@ export class KDst extends Station {
 }
 
 export class KJah extends Station {
-    name = 'K-Jah';
+    name = 'K-JAH';
     icon = `/station-icons/sa/k_jah_west.png`;
     songFolder = null;
 }
@@ -29,7 +29,7 @@ export class KJah extends Station {
 export class KRose extends Station {
     name = 'K-Rose';
     icon = `/station-icons/sa/k_rose.png`;
-    songFolder = null;
+    songFolder = 'K-ROSE';
 }
 
 export class MasterSounds extends Station {
