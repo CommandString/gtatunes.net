@@ -108,7 +108,23 @@ onMounted(async () => {
         if (!paused.value) {
             switchAudio.value!.pause();
         }
-    })
+    });
+
+    document.addEventListener('keydown', (e) => {
+        let check: Record<string, () => any> = {
+            ' ': () => playPause(!paused.value),
+            'ArrowLeft': () => changeSong('previous'),
+            'ArrowRight': () => changeSong('next'),
+            'ArrowUp': () => volume.value = Math.min(17, volume.value + 1),
+            'ArrowDown': () => volume.value = Math.max(0, volume.value - 1),
+        };
+
+        if (check[e.key]) {
+            check[e.key]();
+        }
+
+        e.preventDefault();
+    });
 });
 
 watch(volume, value => {
