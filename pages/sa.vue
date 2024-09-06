@@ -451,6 +451,8 @@ section.radio {
     align-items: center;
     justify-content: space-between;
     padding-bottom: 20px;
+    height: 100vh;
+    overflow: auto;
 
     .container {
         width: 100%;
