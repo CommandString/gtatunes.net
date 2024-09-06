@@ -24,7 +24,9 @@ export abstract class Station {
             return this.songs;
         }
 
-        const files = await readdir(path.resolve(audioFolder, this.songFolder ?? this.name));
+        let pathPrefix = [audioFolder, this.songFolder ?? this.name];
+
+        const files = await readdir(path.resolve(...pathPrefix));
         let songs = [];
 
         const getPaths = (title: string, type: 'Intro'|'Outro'): Array<string> => {
@@ -32,7 +34,7 @@ export abstract class Station {
 
             for (let file of files) {
                 if (file.includes(`${title} (${type}`)) {
-                    intros.push(path.resolve(audioFolder, this.name, file));
+                    intros.push(path.resolve(...pathPrefix, file));
                 }
             }
 
@@ -46,7 +48,7 @@ export abstract class Station {
 
             let title = file.replace(' (Mid).ogg', '');
 
-            songs.push(new Song(this, title, path.resolve(audioFolder, this.name, file), getPaths(title, 'Intro').reverse(), getPaths(title, 'Outro').reverse()));
+            songs.push(new Song(this, title, path.resolve(...pathPrefix, file), getPaths(title, 'Intro').reverse(), getPaths(title, 'Outro').reverse()));
         }
 
         return this.songs = songs;
@@ -58,7 +60,8 @@ export abstract class Station {
     }
 
     public async getRandomSegment(type: 'ID'|'DJ'|'Caller'): Promise<string> {
-        const files = await readdir(path.resolve(audioFolder, this.name));
+        let pathPrefix = [audioFolder, this.songFolder ?? this.name];
+        const files = await readdir(path.resolve(...pathPrefix));
         let ids = [];
 
         for (let file of files) {
@@ -73,7 +76,7 @@ export abstract class Station {
 
         let randomId = ids[Math.floor(Math.random() * ids.length)];
 
-        return path.resolve(audioFolder, this.name, randomId);
+        return path.resolve(...pathPrefix, randomId);
     }
 }
 
