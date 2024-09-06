@@ -401,7 +401,7 @@ async function playPause(pause: boolean) {
                     </div>
                 </div>
             </div>
-            <p class="version">v4.0.0</p>
+            <p class="version">v4</p>
         </div>
     </section>
     <Modal class="change-background" :open="selectingBackground" @close="() => selectingBackground = false">
