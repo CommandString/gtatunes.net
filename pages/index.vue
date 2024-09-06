@@ -48,7 +48,7 @@ const year = new Date().getFullYear();
                 <p>Listen to all of the radio stations from the GTA 3D universe in one place!</p>
                 <div class="buttons">
                     <a href="/discord" target="_blank" class="button">Join Our Discord</a>
-                    <a href="https://github.com/commandstring/gtatunes.net" target="_blank" class="button">Github Repo</a>
+                    <a href="https://github.com/commandstring/gtatunes.net" target="_blank" class="button">Github</a>
                 </div>
             </div>
         </div>
