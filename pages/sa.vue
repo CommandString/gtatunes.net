@@ -415,6 +415,7 @@ section.radio {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    padding-bottom: 20px;
 
     .container {
         width: 100%;
@@ -617,6 +618,7 @@ section.radio {
         grid-template-columns: repeat(11, 1fr);
         gap: 20px;
         align-items: center;
+        margin-bottom: 40px;
 
         @include breakpoint(1100px) {
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -815,6 +817,10 @@ section.radio {
 
     @include breakpoint(1015px) {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include breakpoint(600px) {
+        grid-template-columns: repeat(1, 1fr);
     }
 
     .bg-option {
