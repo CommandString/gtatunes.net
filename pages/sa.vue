@@ -313,7 +313,7 @@ async function playPause(pause: boolean) {
                     <span class="setting__value">{{ streamAudio ? 'On' : 'Off' }}</span>
                 </div>
                 <div
-                    class="setting setting--stream setting--toggle"
+                    class="setting setting--toggle"
                     :class="{ 'active': disableDJs }">
                     <span @click="() => disableDJs = !disableDJs" class="setting__name">Disable DJs</span>
                     <span class="setting__value">{{ disableDJs ? 'On' : 'Off' }}</span>
