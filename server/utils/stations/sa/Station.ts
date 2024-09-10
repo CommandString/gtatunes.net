@@ -2,7 +2,7 @@ import ffmpeg, {FfmpegCommand} from "fluent-ffmpeg";
 import path from "node:path";
 import {readdir} from "node:fs/promises";
 
-const AUDIO_FOLDER = path.resolve(process.cwd(), 'audio');
+const AUDIO_FOLDER = path.resolve(process.cwd(), 'audio', 'sa');
 
 const createConcatStream = (files: Array<string>): FfmpegCommand => {
     return ffmpeg()
