@@ -147,7 +147,6 @@ export default defineEventHandler(async (event) => {
         songStream.kill('SIGKILL');
     });
 
-
     let stream = new PassThrough();
     songStream.pipe(stream);
 

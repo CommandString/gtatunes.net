@@ -80,7 +80,7 @@ watch(background, value => {
 });
 
 onMounted(async () => {
-    let stationsReq = await fetch('/api/stations/sa');
+    let stationsReq = await fetch('/api/sa/stations');
 
     if (!stationsReq.ok) {
         return alert('There was an issue fetching the radio stations. Please contact support or try again later.');
@@ -197,7 +197,7 @@ async function changeSong(
         audioOptions.set('outro', '0');
     }
 
-    audio.value!.src = `/api/play?${audioOptions.toString()}`;
+    audio.value!.src = `/api/sa/play?${audioOptions.toString()}`;
 
     await switchAudio.value!.play();
 
@@ -412,7 +412,7 @@ async function playPause(pause: boolean) {
             </div>
         </section>
     </main>
-    <Modal class="change-background" :open="selectingBackground" @close="() => selectingBackground = false">
+    <SaModal class="change-background" :open="selectingBackground" @close="() => selectingBackground = false">
         <template v-slot:title>Background</template>
         <template v-slot:body>
             <div
@@ -427,8 +427,8 @@ async function playPause(pause: boolean) {
                 <img :src="bg.image" :alt="bg.name" :class="{'middle': bg.key === 'san-fierro'}">
             </div>
         </template>
-    </Modal>
-    <Modal class="select-song" :open="selectingSong" @close="() => selectingSong = false">
+    </SaModal>
+    <SaModal class="select-song" :open="selectingSong" @close="() => selectingSong = false">
         <template v-slot:title>Change Song</template>
         <template v-slot:body>
             <div
@@ -453,8 +453,8 @@ async function playPause(pause: boolean) {
                 </div>
             </div>
         </template>
-    </Modal>
-    <Modal class="help-modal" :open="showingHelpModal" @close="() => showingHelpModal = false">
+    </SaModal>
+    <SaModal class="help-modal" :open="showingHelpModal" @close="() => showingHelpModal = false">
         <template #title>Help</template>
         <template #body>
             <h2>Shortcuts</h2>
@@ -493,7 +493,7 @@ async function playPause(pause: boolean) {
                 and outros. Do note that SFUR does not have any audio files without the DJ so you will still hear
                 the DJ in the intros and outros!</p>
         </template>
-    </Modal>
+    </SaModal>
 </template>
 
 <style scoped lang="scss">

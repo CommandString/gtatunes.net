@@ -1,8 +1,6 @@
 import {Station} from "./Station";
 import type {SongMetaData} from "./Station";
 
-let stations: Station[]|null;
-
 export class BounceFM extends Station {
     name = 'Bounce FM';
     icon = `/station-icons/sa/bounce_fm.png`;
@@ -274,6 +272,8 @@ export class WCTR extends Station {
         ['Lonely Hearts - Episode #3', ['Christy MacIntyre'], 1992, null],
     ]
 }
+
+let stations: Station[]|null;
 
 export function getStations(): Station[] {
     if (!stations) {
