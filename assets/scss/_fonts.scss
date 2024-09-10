@@ -5,14 +5,20 @@
 }
 
 @font-face {
-    font-family: 'Bank Gothic';
-    src: url('/fonts/Bank-Gothic-Medium.ttf') format('opentype');
+    font-family: 'Diploma';
+    src: url('/fonts/Diploma-Regular.ttf') format('truetype');
     font-weight: $fw-regular;
 }
 
 @font-face {
-    font-family: 'Diploma';
-    src: url('/fonts/Diploma-Regular.ttf') format('truetype');
+    font-family: 'Bank Gothic';
+    src: url('/fonts/Bank-Gothic-Medium.ttf') format('opentype');
+    font-weight: $fw-medium;
+}
+
+@font-face {
+    font-family: 'Pricedown';
+    src: url('/fonts/pricedown.otf') format('opentype');
     font-weight: $fw-regular;
 }
 
@@ -22,4 +28,8 @@
 
 .diploma {
     font-family: 'Diploma', sans-serif;
+}
+
+.pricedown {
+    font-family: 'Pricedown', sans-serif;
 }
