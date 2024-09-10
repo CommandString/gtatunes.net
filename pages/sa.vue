@@ -279,137 +279,139 @@ async function playPause(pause: boolean) {
 </script>
 
 <template>
-    <section class="radio" :class="background">
-        <audio ref="audio"></audio>
-        <audio ref="switchAudio" src="/audio/switch-station.mp3" loop></audio>
-        <div class="container">
-            <h1 class="radio-title">San Andreas</h1>
-            <div class="settings">
-                <div class="setting setting--volume active">
+    <main>
+        <section class="radio" :class="background">
+            <audio ref="audio"></audio>
+            <audio ref="switchAudio" src="/audio/switch-station.mp3" loop></audio>
+            <div class="container">
+                <h1 class="radio-title">San Andreas</h1>
+                <div class="settings">
+                    <div class="setting setting--volume active">
+                    <span
+                        class="setting__name"
+                        @wheel="(e) => {
+                            e.preventDefault();
+
+                            if (e.deltaY > 0) {
+                                volume = Math.max(0, volume - 1);
+                            } else {
+                                volume = Math.min(17, volume + 1);
+                            }
+                        }"
+                        @click="(e) => muted = !muted"
+                    >
+                        Audio
+                    </span>
+                        <div class="volume" :class="{
+                            'volume--muted': muted
+                        }">
+                            <div
+                                v-for="i in 17" class="volume__bar"
+                                :class="{'active': i <= volume && !muted}"
+                                @click="() => volume = i"
+                            ></div>
+                        </div>
+                    </div>
+                    <div
+                        class="setting"
+                        @click="() => selectingBackground = true">
+                        <span class="setting__name">Change Background</span>
+                    </div>
+                    <div
+                        class="setting"
+                        @click="() => {
+                            if (currentStation === null) {
+                                return;
+                            }
+
+                            selectingSong = true;
+                        }"
+                        :class="{'disabled': currentStation === null}"
+                    >
+                        <span class="setting__name">Select Song</span>
+                    </div>
+                    <div
+                        class="setting setting--stream setting--toggle"
+                        :class="{ 'active': streamAudio }">
+                        <span @click="() => streamAudio = !streamAudio" class="setting__name">Stream Audio</span>
+                        <span class="setting__value">{{ streamAudio ? 'On' : 'Off' }}</span>
+                    </div>
+                    <div
+                        class="setting setting--toggle"
+                        :class="{ 'active': disableDJs }">
+                        <span @click="() => disableDJs = !disableDJs" class="setting__name">Disable DJs</span>
+                        <span class="setting__value">{{ disableDJs ? 'On' : 'Off' }}</span>
+                    </div>
+                    <div class="setting"
+                         :class="{ 'active': showingHelpModal }">
+                        <span @click="() => showingHelpModal = !showingHelpModal" class="setting__name">Help</span>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="current-station">
                 <span
-                    class="setting__name"
-                    @wheel="(e) => {
-                        e.preventDefault();
-
-                        if (e.deltaY > 0) {
-                            volume = Math.max(0, volume - 1);
-                        } else {
-                            volume = Math.min(17, volume + 1);
-                        }
-                    }"
-                    @click="(e) => muted = !muted"
+                    @wheel="wheelToChangeStation"
+                    @click="() => changeStation(null)"
                 >
-                    Audio
+                    Radio Station
                 </span>
-                    <div class="volume" :class="{
-                        'volume--muted': muted
-                    }">
-                        <div
-                            v-for="i in 17" class="volume__bar"
-                            :class="{'active': i <= volume && !muted}"
-                            @click="() => volume = i"
-                        ></div>
+                    <span>
+                    {{ currentStation?.name ?? 'None' }}
+                </span>
+                </div>
+                <div @wheel="wheelToChangeStation" class="stations">
+                    <div
+                        v-for="station in stations"
+                        class="station"
+                        :class="{'active': currentStation?.name === station.name}"
+                        @click="() => changeStation((currentStation?.name === station.name) ? null : station)"
+                    >
+                        <img :src="station.icon" :alt="station.name">
+                        <img :src="station.icon" :alt="station.name">
                     </div>
                 </div>
-                <div
-                    class="setting"
-                    @click="() => selectingBackground = true">
-                    <span class="setting__name">Change Background</span>
-                </div>
-                <div
-                    class="setting"
-                    @click="() => {
-                        if (currentStation === null) {
-                            return;
-                        }
-
-                        selectingSong = true;
-                    }"
-                    :class="{'disabled': currentStation === null}"
-                >
-                    <span class="setting__name">Select Song</span>
-                </div>
-                <div
-                    class="setting setting--stream setting--toggle"
-                    :class="{ 'active': streamAudio }">
-                    <span @click="() => streamAudio = !streamAudio" class="setting__name">Stream Audio</span>
-                    <span class="setting__value">{{ streamAudio ? 'On' : 'Off' }}</span>
-                </div>
-                <div
-                    class="setting setting--toggle"
-                    :class="{ 'active': disableDJs }">
-                    <span @click="() => disableDJs = !disableDJs" class="setting__name">Disable DJs</span>
-                    <span class="setting__value">{{ disableDJs ? 'On' : 'Off' }}</span>
-                </div>
-                <div class="setting"
-                     :class="{ 'active': showingHelpModal }">
-                    <span @click="() => showingHelpModal = !showingHelpModal" class="setting__name">Help</span>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="current-station">
-            <span
-                @wheel="wheelToChangeStation"
-                @click="() => changeStation(null)"
-            >
-                Radio Station
-            </span>
-                <span>
-                {{ currentStation?.name ?? 'None' }}
-            </span>
-            </div>
-            <div @wheel="wheelToChangeStation" class="stations">
-                <div
-                    v-for="station in stations"
-                    class="station"
-                    :class="{'active': currentStation?.name === station.name}"
-                    @click="() => changeStation((currentStation?.name === station.name) ? null : station)"
-                >
-                    <img :src="station.icon" :alt="station.name">
-                    <img :src="station.icon" :alt="station.name">
-                </div>
-            </div>
-            <div class="controls"
-                 :class="{'controls--hidden': currentSong === null || currentStation === null}">
-                <div v-if="currentStation !== null && currentSong !== null"
-                     class="controls__currently-playing">
-                    <div class="station">
-                        <img :src="currentStation.icon" :alt="currentStation.name">
+                <div class="controls"
+                     :class="{'controls--hidden': currentSong === null || currentStation === null}">
+                    <div v-if="currentStation !== null && currentSong !== null"
+                         class="controls__currently-playing">
+                        <div class="station">
+                            <img :src="currentStation.icon" :alt="currentStation.name">
+                        </div>
+                        <div class="song">
+                            <div class="song__title">{{ currentSong.name }}</div>
+                            <div class="song__meta">{{ currentSong.artists.join(', ') }}</div>
+                        </div>
                     </div>
-                    <div class="song">
-                        <div class="song__title">{{ currentSong.name }}</div>
-                        <div class="song__meta">{{ currentSong.artists.join(', ') }}</div>
+                    <div class="controls__state">
+                        <div v-if="audio" class="controls__media">
+                            <SvgoNextIcon
+                                :fontControlled="false"
+                                class="previous-song"
+                                @click="() => (audio!.currentTime < 5) ?
+                                changeSong('previous') :
+                                audio!.currentTime = 0"
+                            />
+                            <SvgoPauseIcon
+                                :fontControlled="false"
+                                class="play-icon"
+                                @click="() => playPause(true)"
+                                :class="{'hidden': paused}"
+                            />
+                            <SvgoPlayIcon
+                                :fontControlled="false"
+                                class="pause-icon"
+                                @click="() => playPause(false)"
+                                :class="{'hidden': !paused}"
+                            />
+                            <SvgoNextIcon @click="() => changeSong('next')"/>
+                        </div>
                     </div>
                 </div>
-                <div class="controls__state">
-                    <div v-if="audio" class="controls__media">
-                        <SvgoNextIcon
-                            :fontControlled="false"
-                            class="previous-song"
-                            @click="() => (audio!.currentTime < 5) ?
-                            changeSong('previous') :
-                            audio!.currentTime = 0"
-                        />
-                        <SvgoPauseIcon
-                            :fontControlled="false"
-                            class="play-icon"
-                            @click="() => playPause(true)"
-                            :class="{'hidden': paused}"
-                        />
-                        <SvgoPlayIcon
-                            :fontControlled="false"
-                            class="pause-icon"
-                            @click="() => playPause(false)"
-                            :class="{'hidden': !paused}"
-                        />
-                        <SvgoNextIcon @click="() => changeSong('next')"/>
-                    </div>
-                </div>
+                <p class="version">v5</p>
             </div>
-            <p class="version">v5</p>
-        </div>
-    </section>
+        </section>
+    </main>
     <Modal class="change-background" :open="selectingBackground" @close="() => selectingBackground = false">
         <template v-slot:title>Background</template>
         <template v-slot:body>
@@ -508,6 +510,10 @@ async function playPause(pause: boolean) {
     color: #B7D2F3;
 }
 
+main {
+    cursor: url("@/assets/images/cursors/sa.png"), auto;
+}
+
 section.radio {
     $gradient-transparency: 0.5;
     $gradient-overlay: linear-gradient(rgba(0, 0, 0, $gradient-transparency), rgba(0, 0, 0, $gradient-transparency));
@@ -595,7 +601,7 @@ section.radio {
             }
 
             &__name {
-                cursor: pointer;
+                cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
 
                 @media (hover: hover) {
                     &:hover {
@@ -724,7 +730,7 @@ section.radio {
             color: #B7D2F3;
             font-weight: $fw-light;
             font-size: 1.9em;
-            cursor: pointer;
+            cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
             transition: opacity 150ms;
             text-transform: uppercase;
             user-select: none;
@@ -743,7 +749,7 @@ section.radio {
         }
 
         .station {
-            cursor: pointer;
+            cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
             position: relative;
             height: 100px;
 
@@ -831,7 +837,7 @@ section.radio {
                     width: $size;
                     height: $size;
                     fill: white;
-                    cursor: pointer;
+                    cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
 
                     &.previous-song {
                         transform: rotate(180deg);
@@ -897,7 +903,7 @@ section.radio {
                 background-color: #4A5A6B;
                 border-radius: 10px;
                 margin-bottom: 5px;
-                cursor: pointer;
+                cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
                 overflow: hidden;
 
                 .progress__bar {
@@ -942,7 +948,7 @@ section.radio {
     }
 
     .bg-option {
-        cursor: pointer;
+        cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
 
         img {
             width: 100%;
@@ -983,7 +989,7 @@ section.radio {
 
     .song {
         font-size: 16px;
-        cursor: pointer;
+        cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
         color: #aaa;
         font-family: "Outfit", sans-serif;
 
