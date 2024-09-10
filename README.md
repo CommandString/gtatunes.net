@@ -48,7 +48,7 @@ GET `/api/stations` (source: `/server/api/stations.get.ts`)
 
 ## Get Game Stations
 
-GET `/api/stations/:game` (source: `/server/api/stations/[game].get.ts`)
+GET `/api/:game/stations` (source: `/server/api/:game/stations.get.ts`)
 
 ```json5
 [
@@ -56,9 +56,9 @@ GET `/api/stations/:game` (source: `/server/api/stations/[game].get.ts`)
 ]
 ```
 
-## Play Music
+## Play San Andreas Stations
 
-GET `/api/play` (source: `/server/api/play.get.ts`)
+GET `/api/sa/play` (source: `/server/api/sa/play.get.ts`)
 
 ### Query Parameters
 

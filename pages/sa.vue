@@ -408,7 +408,7 @@ async function playPause(pause: boolean) {
                         </div>
                     </div>
                 </div>
-                <p class="version">v5</p>
+                <p class="version">v6</p>
             </div>
         </section>
     </main>
