@@ -248,7 +248,7 @@ function wheelToChangeStation(e: WheelEvent) {
 
     let direction = e.deltaY < 0 ? 1 : -1;
 
-    if (!currentStation) {
+    if (!currentStation.value) {
         changeStation(stations.value![direction === 1 ? 0 : stations.value!.length - 1]);
         return;
     }
