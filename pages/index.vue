@@ -74,6 +74,7 @@ const year = new Date().getFullYear();
     <footer class="footer">
         <div class="container">
             <p>&copy; {{year}} GTATunes</p>
+            <p>Website by <a href="https://robertsnedeker.com" target="_blank">Robert Snedeker</a></p>
         </div>
     </footer>
 </template>
@@ -379,9 +380,23 @@ footer.footer {
     font-weight: $fw-regular;
     background: $red;
 
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
     p {
         margin: 0;
         font-size: 16px;
+
+        a {
+            color: #fff;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 }
 </style>
