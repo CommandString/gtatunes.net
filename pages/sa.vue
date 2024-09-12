@@ -647,6 +647,7 @@ section.radio {
                     &--muted {
                         pointer-events: none;
                     }
+
                     .volume__bar {
                         width: 7px;
                         background-color: #4A5A6B;
