@@ -70,6 +70,7 @@ let paused: Ref<boolean> = ref(true);
 let muted: Ref<boolean> = ref(false);
 let selectingBackground: Ref<boolean> = ref(false);
 let selectingSong: Ref<boolean> = ref(false);
+let isClicking: Ref<boolean> = ref(false);
 
 watch(background, value => {
     if (localStorage.getItem('background') === value) {
@@ -127,6 +128,9 @@ onMounted(async () => {
             e.preventDefault();
         }
     });
+
+    document.addEventListener('mousedown', () => isClicking.value = true);
+    document.addEventListener('mouseup', () => isClicking.value = false);
 });
 
 watch(volume, value => {
@@ -140,11 +144,11 @@ watch(muted, value => {
 
 watch(streamAudio, value => {
     localStorage.setItem('stream-audio', value ? '1' : '0');
-})
+});
 
 watch(disableDJs, value => {
     localStorage.setItem('disable-djs', value ? '1' : '0');
-})
+});
 
 async function changeSong(
     song: APISong | 'next' | 'previous',
@@ -276,6 +280,16 @@ async function playPause(pause: boolean) {
 
     paused.value = pause;
 }
+
+async function volumeBarHover(e: MouseEvent, i: number) {
+    console.log(e);
+
+    if (!isClicking.value) {
+        return;
+    }
+
+    volume.value = i;
+}
 </script>
 
 <template>
@@ -309,6 +323,7 @@ async function playPause(pause: boolean) {
                                 v-for="i in 17" class="volume__bar"
                                 :class="{'active': i <= volume && !muted}"
                                 @click="() => volume = i"
+                                @mouseover="(e: MouseEvent) => volumeBarHover(e, i)"
                             ></div>
                         </div>
                     </div>
@@ -652,6 +667,7 @@ section.radio {
                         border-radius: 1px;
                         transition: background-color 50ms;
                         position: relative;
+                        user-select: none;
 
                         &::after {
                             content: '';
@@ -661,6 +677,7 @@ section.radio {
                             height: 100%;
                             width: 7px;
                             background-color: #4A5A6B;
+                            pointer-events: none;
                         }
 
                         &.active::after {
