@@ -144,7 +144,7 @@ export default defineEventHandler(async (event) => {
 
     event.node.req.on('close', () => {
         console.log('Request closed.');
-        songStream.kill('SIGKILL');
+        songStream?.kill('SIGKILL');
     });
 
     let stream = new PassThrough();

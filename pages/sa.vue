@@ -64,10 +64,10 @@ let stations: Ref<APIStation[] | null> = ref(null);
 let currentStation: Ref<APIStation | null> = ref(null);
 let currentSong: Ref<APISong | null> = ref(null);
 let streamAudio: Ref<boolean> = ref(false);
-let disableDJs: Ref<boolean> = ref(false);
-let showingHelpModal: Ref<boolean> = ref(false);
 let paused: Ref<boolean> = ref(true);
 let muted: Ref<boolean> = ref(false);
+let disableDJs: Ref<boolean> = ref(false);
+let showingHelpModal: Ref<boolean> = ref(false);
 let selectingBackground: Ref<boolean> = ref(false);
 let selectingSong: Ref<boolean> = ref(false);
 let isClicking: Ref<boolean> = ref(false);
@@ -281,7 +281,7 @@ async function playPause(pause: boolean) {
     paused.value = pause;
 }
 
-async function volumeBarHover(e: MouseEvent, i: number) {
+function volumeBarHover(i: number): void {
     if (!isClicking.value) {
         return;
     }
@@ -310,7 +310,7 @@ async function volumeBarHover(e: MouseEvent, i: number) {
                                 volume = Math.min(17, volume + 1);
                             }
                         }"
-                        @click="(e) => muted = !muted"
+                        @click="() => muted = !muted"
                     >
                         Audio
                     </span>
@@ -318,10 +318,10 @@ async function volumeBarHover(e: MouseEvent, i: number) {
                             'volume--muted': muted
                         }">
                             <div
-                                v-for="i in 17" class="volume__bar"
-                                :class="{'active': i <= volume && !muted}"
-                                @click="() => volume = i"
-                                @mouseover="(e: MouseEvent) => volumeBarHover(e, i)"
+                                v-for="i in 18" class="volume__bar"
+                                :class="{'active': i-1 <= volume && !muted}"
+                                @click="() => volume = i-1"
+                                @mouseover="() => volumeBarHover(i-1)"
                             ></div>
                         </div>
                     </div>
@@ -649,7 +649,7 @@ section.radio {
 
                 .volume {
                     $base: 15%;
-                    $bars: 16;
+                    $bars: 17;
 
                     cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;
                     display: flex;
@@ -1004,7 +1004,7 @@ section.radio {
 
     .song {
         font-size: 16px;
-        cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
+        cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;
         color: #aaa;
         font-family: "Outfit", sans-serif;
 
