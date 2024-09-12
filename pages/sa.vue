@@ -641,7 +641,6 @@ section.radio {
                     cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;
                     display: flex;
                     align-items: flex-end;
-                    gap: 7px;
                     height: 40px;
 
                     &--muted {
@@ -649,22 +648,22 @@ section.radio {
                     }
 
                     .volume__bar {
-                        width: 7px;
-                        background-color: #4A5A6B;
+                        width: 14px;
                         border-radius: 1px;
                         transition: background-color 50ms;
                         position: relative;
 
-                        &:not(:last-child)::after {
+                        &::after {
                             content: '';
                             position: absolute;
                             top: 0;
-                            left: 100%;
+                            right: 0;
                             height: 100%;
-                            width: 4px;
+                            width: 7px;
+                            background-color: #4A5A6B;
                         }
 
-                        &.active {
+                        &.active::after {
                             background-color: #B7D2F3;
                         }
                     }
@@ -685,11 +684,11 @@ section.radio {
                     }
 
                     &:has(.volume__bar:hover) {
-                        .volume__bar {
+                        .volume__bar::after {
                             background-color: #B7D2F3;
                         }
 
-                        .volume__bar:hover ~ .volume__bar {
+                        .volume__bar:hover ~ .volume__bar::after {
                             background-color: #4A5A6B;
                         }
                     }
