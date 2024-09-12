@@ -638,6 +638,7 @@ section.radio {
                     $base: 15%;
                     $bars: 16;
 
+                    cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
                     display: flex;
                     align-items: flex-end;
                     gap: 7px;
@@ -646,7 +647,6 @@ section.radio {
                     &--muted {
                         pointer-events: none;
                     }
-
                     .volume__bar {
                         width: 7px;
                         background-color: #4A5A6B;
