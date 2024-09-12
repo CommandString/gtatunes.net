@@ -282,8 +282,6 @@ async function playPause(pause: boolean) {
 }
 
 async function volumeBarHover(e: MouseEvent, i: number) {
-    console.log(e);
-
     if (!isClicking.value) {
         return;
     }
