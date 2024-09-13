@@ -109,16 +109,16 @@ export class MSXFM extends Station {
 export class Lips106 extends Station {
     name = "Lips 106";
     file = audioFile('LIPS.wav');
-    icon = '/station-icons/iii/lips-106.webp';
+    icon = '/station-icons/iii/lips.png';
 
     constructor() {
         super([
-            ["Bump To The Music", ["Fatamarse"], 2001, 0, 0],
-            ["Feels Like I Just Can't Take No More", ["April's In Paris"], 2001, 0, 0],
-            ["Forever", ["Lucy"], 2001, 0, 0],
-            ["Pray It Goes Ok?", ["Boyz 2 Girlz"], 2001, 0, 0],
-            ["Grand Theft Auto", ["Da Shootaz"], 1997, 0, 0],
-            ["Rubber Tip", ["Funky BJs"], 2001, 0, 0]
+            ["Bump To The Music", ["Fatamarse"], 2001, 74, 333],
+            ["Feels Like I Just Can't Take No More", ["April's In Paris"], 2001, 333, 530],
+            ["Forever", ["Lucy"], 2001, 530, 748],
+            ["Pray It Goes Ok?", ["Boyz 2 Girlz"], 2001, 748, 938],
+            ["Grand Theft Auto", ["Da Shootaz"], 1997, 938, 1041],
+            ["Rubber Tip", ["Funky BJs"], 2001, 1041, 1178],
         ]);
     }
 }
@@ -126,17 +126,17 @@ export class Lips106 extends Station {
 export class GameRadioFM extends Station {
     name = "Game Radio FM";
     file = audioFile('GAME.wav');
-    icon = '/station-icons/iii/game-radio-fm.webp';
+    icon = '/station-icons/iii/game-radio.png';
 
     constructor() {
         super([
             ["We're Live (Danger)", ["Royce Da 5'9\""], 2001, 0, 0],
-            ["Nature Freestyle", ["Nature"], 2001, 0, 0],
-            ["JoJo Pellegrino Freestyle", ["JoJo Pellegrino"], 2001, 0, 0],
-            ["Spit Game", ["Royce Da 5'9\" & Pretty Ugly"], 2001, 0, 0],
-            ["I'm the King", ["Royce Da 5'9\""], 1999, 0, 0],
-            ["By a Stranger", ["Black Rob"], 2000, 0, 0],
-            ["Rising to the Top", ["Agallah & Sean Price"], 2001, 0, 0]
+            ["Nature Freestyle", ["Nature"], 2001, 32, 182],
+            ["JoJo Pellegrino Freestyle", ["JoJo Pellegrino"], 2001, 182, 228],
+            ["Spit Game", ["Royce Da 5'9\" & Pretty Ugly"], 2001, 228, 455],
+            ["I'm the King", ["Royce Da 5'9\""], 1999, 455, 715],
+            ["By a Stranger", ["Black Rob"], 2000, 715, 770],
+            ["Rising to the Top", ["Agallah & Sean Price"], 2001, 770, 916],
         ]);
     }
 }
@@ -144,7 +144,7 @@ export class GameRadioFM extends Station {
 export class ChatterboxFM extends Station {
     name = "Chatterbox FM";
     file = audioFile('CHAT.wav');
-    icon = '/station-icons/iii/chatterbox-fm.webp';
+    icon = '/station-icons/iii/chatterbox.svg';
 
     constructor() {
         super([
@@ -193,8 +193,8 @@ export function getStations(): Station[] {
             new KJAHRadio,
             new RiseFM,
             new MSXFM,
-            // new GameRadioFM,
-            // new Lips106,
+            new Lips106,
+            new GameRadioFM,
         ];
     }
 
