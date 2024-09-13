@@ -50,7 +50,7 @@ onMounted(() => {
     pointer-events: none;
     backdrop-filter: blur(5px);
     transition: opacity 150ms;
-    cursor: url("@/assets/images/cursors/sa.png"), auto;
+    @include sa_cursor();
 
     &:has(.modal--open) {
         opacity: 1;
@@ -77,7 +77,7 @@ onMounted(() => {
         display: flex;
         flex-direction: column;
         height: fit-content;
-        cursor: url("@/assets/images/cursors/sa.png"), auto;
+        @include sa_cursor();
 
         &--open {
             pointer-events: unset;
@@ -117,7 +117,7 @@ onMounted(() => {
             font-family: "Bank Gothic", sans-serif;
             font-size: 20px;
             text-transform: uppercase;
-            cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;
+            @include sa_pointer();
             color: #ccc;
             transition: color 150ms;
 

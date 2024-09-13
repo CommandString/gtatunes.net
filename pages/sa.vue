@@ -524,7 +524,7 @@ function volumeBarHover(i: number): void {
 }
 
 main {
-    cursor: url("@/assets/images/cursors/sa.png"), auto;
+    @include sa_cursor();
 }
 
 section.radio {
@@ -614,7 +614,7 @@ section.radio {
             }
 
             &__name {
-                cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
+                @include sa_pointer();
 
                 @media (hover: hover) {
                     &:hover {
@@ -651,7 +651,7 @@ section.radio {
                     $base: 15%;
                     $bars: 17;
 
-                    cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;
+                    @include sa_pointer();
                     display: flex;
                     align-items: flex-end;
                     height: 40px;
@@ -745,7 +745,7 @@ section.radio {
             color: #B7D2F3;
             font-weight: $fw-light;
             font-size: 1.9em;
-            cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
+            @include sa_pointer();
             transition: opacity 150ms;
             text-transform: uppercase;
             user-select: none;
@@ -764,7 +764,7 @@ section.radio {
         }
 
         .station {
-            cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
+            @include sa_pointer();
             position: relative;
             height: 100px;
 
@@ -852,7 +852,7 @@ section.radio {
                     width: $size;
                     height: $size;
                     fill: white;
-                    cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
+                    @include sa_pointer();
 
                     &.previous-song {
                         transform: rotate(180deg);
@@ -918,7 +918,7 @@ section.radio {
                 background-color: #4A5A6B;
                 border-radius: 10px;
                 margin-bottom: 5px;
-                cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
+                @include sa_pointer();
                 overflow: hidden;
 
                 .progress__bar {
@@ -963,7 +963,7 @@ section.radio {
     }
 
     .bg-option {
-        cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;;
+        @include sa_pointer();
 
         img {
             width: 100%;
@@ -1004,7 +1004,7 @@ section.radio {
 
     .song {
         font-size: 16px;
-        cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;
+        @include sa_pointer();
         color: #aaa;
         font-family: "Outfit", sans-serif;
 

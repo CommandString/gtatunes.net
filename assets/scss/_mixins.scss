@@ -3,3 +3,15 @@
         @content;
     }
 }
+
+@mixin iii_cursor() {
+    cursor: url("@/assets/images/cursors/iii.png") 10 0, auto;
+}
+
+@mixin sa_cursor() {
+    cursor: url("@/assets/images/cursors/sa.png"), auto;
+}
+
+@mixin sa_pointer() {
+    cursor: url("@/assets/images/cursors/sa-pointer.png"), pointer;
+}
