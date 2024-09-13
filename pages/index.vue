@@ -266,11 +266,9 @@ const year = new Date().getFullYear();
     .games-mobile {
         display: none;
         grid-template-columns: repeat(3, 1fr);
-        height: $height;
 
-        @include breakpoint(920px) {
+        @include breakpoint(960px) {
             grid-template-columns: repeat(2, 1fr);
-            height: calc(($height * 2) - 150px);
 
             .game:last-child {
                 height: calc($height - 150px);
@@ -280,10 +278,9 @@ const year = new Date().getFullYear();
 
         @include breakpoint(700px) {
             grid-template-columns: 1fr;
-            height: unset;
 
             .game:last-child {
-                height: unset;
+                height: $height;
                 grid-column: unset;
             }
         }
