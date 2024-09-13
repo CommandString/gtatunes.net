@@ -30,7 +30,7 @@ let games = [
     {
         name: "GTA III",
         key: 'iii',
-        finished: false,
+        finished: true,
         image: iii,
         logo: iiiLogo
     }
